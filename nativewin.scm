@@ -127,6 +127,10 @@ c-declare-end
   if (hConnect) WinHttpCloseHandle(hConnect);
   if (hSession) WinHttpCloseHandle(hSession);
 
+  // Gambit documentation states that the garbage collection will handle
+  // the allocated memory of the foreign object (in this case char-string).
+  // So, calling free(result) is not necessary after this function returns.
+  
   ___return(result);
 c-code-end
 ))
