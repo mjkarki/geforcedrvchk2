@@ -67,6 +67,7 @@ c-declare-end
             char-string
 #<<c-code-end
   LPSTR result = malloc(1);
+  result[0] = '\0';
   DWORD resultIndex = 0;
   DWORD dwSize = 0;
   DWORD dwDownloaded = 0;
