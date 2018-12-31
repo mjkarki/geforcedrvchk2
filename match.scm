@@ -28,6 +28,38 @@
 ;; OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ;; OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+;; A simple pattern matching library.
+;;
+;; Syntax:
+;;
+;; All characters in the search pattern are taken as is.
+;; Brackets '(' and ')' define a section, which is collected for the result.
+;; Inside the brackets, '*', 'A', 'N' and '.' have a special meaning:
+;; * - match and collect all characters until the end of the text or until
+;;     the character immediately after the closing bracket is found.
+;; A - match and collect all alphabetical character until non-alphabetical
+;;     character is found.
+;; N - match and collect all numerical characters (0-9) until non-numerical
+;;     character is found.
+;; . - match and collect any single character.
+;;
+;; Functions:
+;;
+;; (match? pattern text) checks for the text, if the pattern can be found.
+;; Returns #t for a match and #f if there is no match.
+;;
+;; Example:
+;;   (match? "(World)"   "Hello, World!") --> #t
+;;   (match? "value=(N)" "value=abcd")    --> #f
+;;
+;; (match pattern text) searches for the pattern from the text and if the
+;; match is found, returns everything marked with brackets.
+;;
+;; Example:
+;;   (match "(World)"   "Hello, World!") --> "World"
+;;   (match "value=(N)" "value=1234")    --> "1234"
+
+
 (define (match? pattern text)
   (not (equal? (match pattern text) "")))
 
