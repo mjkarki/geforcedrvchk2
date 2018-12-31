@@ -1,10 +1,13 @@
 (include "match.scm")
 (include "unittest.scm")
 
+(test-equal (match "123456"                "123456")                        "")
 (test-equal (match ""                      "")                              "")
 (test-equal (match ""                      "123456")                        "")
 (test-equal (match "123456"                "")                              "")
 (test-equal (match "123456"                "654321")                        "")
+(test-equal (match "(1234)"                "1234")                          "1234")
+(test-equal (match "(1234)"                "4321")                          "")
 (test-equal (match "(..)34"                "123456")                        "12")
 (test-equal (match "12(..)56"              "123456")                        "34")
 (test-equal (match "34(..)"                "123456")                        "56")
@@ -25,3 +28,8 @@
 (test-equal (match "\"(A)\" is my name."   "Hello, \"Fra nk\" is my name.") "")
 (test-equal (match "\"(A A)\" is my name." "Hello, \"Fra nk\" is my name.") "Fra nk")
 (test-equal (match "start: (AN*)"          "start: ABC123xyz")              "ABC123xyz")
+
+(test-equal (match? "(abc)"                "abc")                           #t)
+(test-equal (match? "(abc)"                "cba")                           #f)
+(test-equal (match? "a = (N)"              "a = 1")                         #t)
+(test-equal (match? "a = (N)"              "a = b")                         #f)
