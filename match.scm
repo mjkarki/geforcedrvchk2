@@ -28,6 +28,9 @@
 ;; OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ;; OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+(define (match? pattern text)
+  (not (equal? (match pattern text) "")))
+
 (define (match pattern text)
   (list->string (reverse (_match1 (string->list pattern) (string->list text)))))
 
@@ -75,7 +78,7 @@
         (_match2 pattern (cdr text) collect (cons (car text) result)))))
      ((equal? (car pattern) #\.)                                                ; Match for any single character
       (_match2 (cdr pattern) (cdr text) collect (cons (car text) result)))
-     ((equal? (car pattern) (car text))                                         ; Match for a specific character
+     ((and (not (null? text)) (equal? (car pattern) (car text)))                ; Match for a specific character
       (_match2 (cdr pattern) (cdr text) collect (cons (car text) result)))
      (else                                                                      ; No match, stop searching
       '())))
