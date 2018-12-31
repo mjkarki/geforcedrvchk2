@@ -47,17 +47,21 @@
     '())
    ((null? pattern)                                                             ; We have parsed successfully through the pattern -> match found
     result)
-   ((null? text)                                                                ; We have parsed successfully through the text, possibly eof? possibly partial match? return what we already might have
-    result)
    ((equal? (car pattern) #\()                                                  ; Start collecting the result
     (_match2 (cdr pattern) text #t result))
    ((equal? (car pattern) #\))                                                  ; Stop collecting the result
     (_match2 (cdr pattern) text #f result))
    (collect                                                                     ; We are now collecting characters for the result
     (cond
+     ((equal? (car pattern) #\A)                                                ; Start the search for alphabetic match
+      (cond
+       ((and (not (null? text)) (char-alphabetic? (car text)))                  ; Alphabetic character found, collect it
+        (_match2 pattern (cdr text) collect (cons (car text) result)))
+       (else                                                                    ; Non-alphabetic character found, move on with the pattern
+        (_match2 (cdr pattern) text collect result))))
      ((equal? (car pattern) #\N)                                                ; Start the search for numeric match
       (cond
-       ((char-numeric? (car text))                                              ; Numeric character found, collect it
+       ((and (not (null? text)) (char-numeric? (car text)))                     ; Numeric character found, collect it
         (_match2 pattern (cdr text) collect (cons (car text) result)))
        (else                                                                    ; Non-numeric character found, move on with the pattern
         (_match2 (cdr pattern) text collect result))))
@@ -65,13 +69,17 @@
       (cond
        ((and (> (length pattern) 2) (equal? (caddr pattern) (car text)))        ; Check what character should stop the matching and have we found it yet (i.e. what is the character after closing bracket) only "*)" pattern is accepted
         (_match2 (cdr pattern) text collect result))
+       ((and (= (length pattern) 2) (null? text))                               ; Special case, where the '*)' is at the end of the pattern and there is no character, which would end the matching. So we stop when we reach the end of the text
+        (_match2 (cdr pattern) text collect result))
        (else                                                                    ; Collect the character
         (_match2 pattern (cdr text) collect (cons (car text) result)))))
      ((equal? (car pattern) #\.)                                                ; Match for any single character
       (_match2 (cdr pattern) (cdr text) collect (cons (car text) result)))
-     (else                                                                      ; No match (possibly eof?), stop searching
+     ((equal? (car pattern) (car text))                                         ; Match for a specific character
+      (_match2 (cdr pattern) (cdr text) collect (cons (car text) result)))
+     (else                                                                      ; No match, stop searching
       '())))
-   ((equal? (car pattern) (car text))                                           ; Pattern matches the text, proceed with the search
+   ((and (not (null? text)) (equal? (car pattern) (car text)))                  ; Pattern matches the text, proceed with the search
     (_match2 (cdr pattern) (cdr text) collect result))
    (else                                                                        ; Pattern does not match the text, stop searching
     '())))
