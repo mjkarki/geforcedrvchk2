@@ -28,6 +28,7 @@
 (test-equal (match "\"(A)\" is my name."   "Hello, \"Fra nk\" is my name.") "")
 (test-equal (match "\"(A A)\" is my name." "Hello, \"Fra nk\" is my name.") "Fra nk")
 (test-equal (match "start: (AN*)"          "start: ABC123xyz")              "ABC123xyz")
+(test-equal (match "(A)123(A)"             "abc123def")                     "abcdef")
 
 (test-equal (match? "(abc)"                "abc")                           #t)
 (test-equal (match? "(abc)"                "cba")                           #f)
