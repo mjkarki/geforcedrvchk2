@@ -1,6 +1,10 @@
 (include "match.scm")
 (include "unittest.scm")
 
+(test-equal (match ""                      "")                              "")
+(test-equal (match ""                      "123456")                        "")
+(test-equal (match "123456"                "")                              "")
+(test-equal (match "123456"                "654321")                        "")
 (test-equal (match "(..)34"                "123456")                        "12")
 (test-equal (match "12(..)56"              "123456")                        "34")
 (test-equal (match "34(..)"                "123456")                        "56")
