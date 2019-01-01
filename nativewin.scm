@@ -51,7 +51,7 @@
 ;; hostname     - hostname of the server (e.g. "www.example.com")
 ;; path         - path for the resource, #f can be used for "/"
 ;; ssl?         - #t if encryption shall be used (HTTPS port 443 will be used)
-                  #f if encryption is not required (HTTP port 80 will be used)
+;;                #f if encryption is not required (HTTP port 80 will be used)
 ;; return value - string containing the resource (e.g. the source code of a web page)
 
 
