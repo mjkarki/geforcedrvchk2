@@ -28,6 +28,33 @@
 ;; OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ;; OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
+;; Functions:
+;;
+;; (message-box message title configuration)
+;;
+;; Calls Win32 API MessageBox() function with following parameters:
+;; message       - message text to be shown in the message dialog window
+;; title         - title for the window
+;; configuration - OR'ed configuration parameters for icon and buttons
+;; return value  - what button has been pressed
+;;
+;; Example:
+;;   (message-box "Hello, World!", "Window Title", (bitwise-ior MB_OK MB_ICONINFORMATION))
+;;
+;; (winhttp-check-platform)
+;;
+;; Returns #t if the platform supports WinHTTP API, otherwise #f.
+;;
+;; (winhttp-get hostname path ssl?)
+;;
+;; hostname     - hostname of the server (e.g. "www.example.com")
+;; path         - path for the resource, #f can be used for "/"
+;; ssl?         - #t if encryption shall be used (HTTPS port 443 will be used)
+                  #f if encryption is not required (HTTP port 80 will be used)
+;; return value - string containing the resource (e.g. the source code of a web page)
+
+
 (c-declare
 #<<c-declare-end
   #include <windows.h>
