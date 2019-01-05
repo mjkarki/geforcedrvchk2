@@ -83,6 +83,8 @@
     '())
    ((null? pattern)                                                             ; We have parsed successfully through the pattern -> match found
     result)
+   ((null? text)                                                                ; No more text to be matched --> no match
+    '())
    ((equal? (car pattern) #\()                                                  ; Start collecting the result
     (_match2 (cdr pattern) text #t result))
    ((equal? (car pattern) #\))                                                  ; Stop collecting the result
