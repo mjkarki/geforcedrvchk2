@@ -83,8 +83,6 @@
     '())
    ((null? pattern)                                                             ; We have parsed successfully through the pattern -> match found
     result)
-   ((null? text)                                                                ; No more text to be matched --> no match
-    '())
    ((equal? (car pattern) #\()                                                  ; Start collecting the result
     (_match2 (cdr pattern) text #t result))
    ((equal? (car pattern) #\))                                                  ; Stop collecting the result
@@ -105,6 +103,8 @@
         (_match2 (cdr pattern) text collect result))))
      ((equal? (car pattern) #\*)                                                ; Start the search for any match
       (cond
+       ((null? text)                                                            ; No more text? Move on with the pattern, usually a closing bracket follows the "*", which ends the matching
+        (_match2 (cdr pattern) text collect result))
        ((and (> (length pattern) 2) (equal? (caddr pattern) (car text)))        ; Check what character should stop the matching and have we found it yet (i.e. what is the character after closing bracket) only "*)" pattern is accepted
         (_match2 (cdr pattern) text collect result))
        ((and (= (length pattern) 2) (null? text))                               ; Special case, where the '*)' is at the end of the pattern and there is no character, which would end the matching. So we stop when we reach the end of the text
