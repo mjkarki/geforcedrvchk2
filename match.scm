@@ -107,8 +107,6 @@
         (_match2 (cdr pattern) text collect result))
        ((and (> (length pattern) 2) (equal? (caddr pattern) (car text)))        ; Check what character should stop the matching and have we found it yet (i.e. what is the character after closing bracket) only "*)" pattern is accepted
         (_match2 (cdr pattern) text collect result))
-       ((and (= (length pattern) 2) (null? text))                               ; Special case, where the '*)' is at the end of the pattern and there is no character, which would end the matching. So we stop when we reach the end of the text
-        (_match2 (cdr pattern) text collect result))
        (else                                                                    ; Collect the character
         (_match2 pattern (cdr text) collect (cons (car text) result)))))
      ((equal? (car pattern) #\.)                                                ; Match for any single character
