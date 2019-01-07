@@ -14,7 +14,7 @@ The main point of the application is to prove myself that I'm able to implement 
 
 ## Usage
 
-Load the project from GitHub, use make.bat with MinGW64 and Gambit Scheme to create an executable and put a link to *shell:startup* to execute the application automatically every time Windows starts. Alternatively, if you do not want to compile the application yourself, you can download a pre-compiled binary from [here](https://github.com/mattijk/geforcedrvchk2/releases).
+Load the project from GitHub, use make.bat with fully functional [Gambit Scheme](https://github.com/gambit/gambit) + C compiler installation to create an executable and put a link to *shell:startup* to execute the application automatically every time Windows starts. Alternatively, if you do not want to compile the application yourself, you can download a pre-compiled binary from [here](https://github.com/mattijk/geforcedrvchk2/releases).
 
 Note that because this project uses embedded C code, the source code has to be compiled to native Windows binary. Running this code under Gambit gsi interpreter will not work.
 
