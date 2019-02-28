@@ -1,5 +1,5 @@
-(load "match.scm")
-(load "unittest.scm")
+(include "match.scm")
+(include "unittest.scm")
 
 (test-equal (match "123456"                "123456")                        "")
 (test-equal (match ""                      "")                              "")
