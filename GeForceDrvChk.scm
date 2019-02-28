@@ -28,9 +28,9 @@
 ;; OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ;; OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(include "nativewin.scm")
-(include "misctools.scm")
-(include "match.scm")
+(load "nativewin.scm")
+(load "misctools.scm")
+(load "match.scm")
 
 (define HOST "gfwsl.geforce.com")
 (define PATH "/services_toolkit/services/com/nvidia/services/AjaxDriverService.php?func=DriverManualLookup&psid=101&pfid=859&osID=57&languageCode=1033&beta=0&isWHQL=1&dltype=-1&sort1=0&numberOfResults=10")
