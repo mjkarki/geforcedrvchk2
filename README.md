@@ -11,6 +11,7 @@ The main point of the application is to prove myself that I'm able to implement 
 - fetching a page from a WWW server over SSL using native WINHTTP API
 - embedding all necessary Win32 API C code to the scheme source code
 - compiling single statically linked binary without any dependencies (except of course Windows APIs)
+- a simple unit test macro and unit tests for pattern matching (macros both in define-syntax and define-macro format)
 
 ## Usage
 
