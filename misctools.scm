@@ -31,22 +31,27 @@
 (define (port->string port)
   (list->string (read-all port read-char)))
 
-(define (sort lst f)
+;; sort fn lst
+;;   fn - function for comparison, e.g. < or string<? for ascending sort,
+;;                                      > or string>? for descending sort.
+;;   lst - list to be sorted
+
+(define (sort fn lst)
   (let* ((len (length lst))
          (l/2 (floor (/ len 2))))
     (cond
      ((> len 1)
-      (_merge (sort (take lst l/2) f) (sort (drop lst l/2) f) f))
+      (_merge fn (sort fn (take lst l/2)) (sort fn (drop lst l/2))))
      (else
       lst))))
 
-(define (_merge a b f)
+(define (_merge fn a b)
   (cond
    ((null? a)
     b)
    ((null? b)
     a)
-   ((f (car a) (car b))
-    (cons (car a) (_merge (cdr a) b f)))
+   ((fn (car a) (car b))
+    (cons (car a) (_merge fn (cdr a) b)))
    (else
-    (cons (car b) (_merge a (cdr b) f)))))
+    (cons (car b) (_merge fn a (cdr b))))))
