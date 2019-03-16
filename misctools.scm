@@ -30,3 +30,23 @@
 
 (define (port->string port)
   (list->string (read-all port read-char)))
+
+(define (sort lst f)
+  (let* ((len (length lst))
+         (l/2 (floor (/ len 2))))
+    (cond
+     ((> len 1)
+      (_merge (sort (take lst l/2) f) (sort (drop lst l/2) f) f))
+     (else
+      lst))))
+
+(define (_merge a b f)
+  (cond
+   ((null? a)
+    b)
+   ((null? b)
+    a)
+   ((f (car a) (car b))
+    (cons (car a) (_merge (cdr a) b f)))
+   (else
+    (cons (car b) (_merge a (cdr b) f)))))
