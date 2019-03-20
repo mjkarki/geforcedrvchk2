@@ -25,7 +25,7 @@ This is the second published version in GitHub. A graphics driver checker tool i
 
 ## About the files in this project
 
-This project contains more than is necessary for such a simple tool as GeForceDrvChk. By accident this project contains all my helper functions and tools that I have written for Gambit Scheme. I might consider moving these tools to a separate GitHub project at some point. But for now, evertyhing is hosted under this project.
+This project contains more than is necessary for such a simple tool as GeForceDrvChk. By accident this project contains all my helper functions and tools that I have written for Gambit Scheme. I might consider moving these tools to a separate GitHub project at some point. But for now, everything is hosted under this project.
 
 Libraries:
 
