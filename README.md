@@ -33,4 +33,4 @@ Libraries:
 - *match.scm* simple regular expression inspired library for text matching
 - *unittest.scm* small unit test library written with define-syntax, requires the syntax-case library (command line option -:s)
 - *unittest2.scm* small unit test library written with define-macro, which works without including the syntax-case library
-- *nativewin.scm* native Win32 funtions (MessageBoxA and simple SSL client support)
+- *nativewin.scm* native Win32 functions (MessageBoxA and simple SSL client support)
