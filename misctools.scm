@@ -28,12 +28,24 @@
 ;; OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ;; OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+;; port->string port
+;;   reads all characters from the input port and returns them as a string
+
 (define (port->string port)
   (list->string (read-all port read-char)))
 
+;; log10 x
+;;   returns 10 base logarithm y to the value x
+;;   10^y=x
+
+(define (log10 x)
+  (/ (log x) (log 10)))
+
 ;; sort fn lst
-;;   fn - function for comparison, e.g. < or string<? for ascending sort,
-;;                                      > or string>? for descending sort.
+;;   performs a merge sort for a list
+;;
+;;   fn - function for comparison, e.g. < or string<? for ascending sort
+;;                                      > or string>? for descending sort
 ;;   lst - list to be sorted
 
 (define (sort fn lst)
