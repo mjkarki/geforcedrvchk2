@@ -67,3 +67,26 @@
     (cons (car a) (_merge fn (cdr a) b)))
    (else
     (cons (car b) (_merge fn a (cdr b))))))
+
+;; integer->hex
+;;   converts integer value to hexadecimal string
+;;
+;;   int - positive integer number
+
+(define (integer->hex int)
+  (letrec* ((digits '("0" "1" "2" "3" "4" "5" "6" "7"
+                      "8" "9" "A" "B" "C" "D" "E" "F"))
+            (n->h (lambda (i)
+                    (let ((rem (remainder i 16))
+                          (div (truncate (/ i 16))))
+                      (cond
+                       ((= div 0)
+                        (list-ref digits rem))
+                       (else
+                        (string-append (n->h div) (list-ref digits rem)))))))
+            (hex (n->h int)))
+    (cond
+     ((= 0 (remainder (string-length hex) 2))
+      hex)
+     (else
+      (string-append "0" hex)))))
