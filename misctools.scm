@@ -74,19 +74,24 @@
 ;;   int - positive integer number
 
 (define (integer->hex int)
-  (letrec* ((digits '("0" "1" "2" "3" "4" "5" "6" "7"
-                      "8" "9" "A" "B" "C" "D" "E" "F"))
-            (n->h (lambda (i)
-                    (let ((rem (remainder i 16))
-                          (div (truncate (/ i 16))))
-                      (cond
-                       ((= div 0)
-                        (list-ref digits rem))
-                       (else
-                        (string-append (n->h div) (list-ref digits rem)))))))
-            (hex (n->h int)))
+  (cond
+   ((integer? int)
+    (let ((hex (_integer->hex (abs int))))
+      (cond
+       ((= 0 (remainder (string-length hex) 2))
+        hex)
+       (else
+        (string-append "0" hex)))))
+   (else
+    "")))
+
+(define (_integer->hex int)
+  (let ((digits '("0" "1" "2" "3" "4" "5" "6" "7"
+                  "8" "9" "A" "B" "C" "D" "E" "F"))
+        (rem (remainder int 16))
+        (div (truncate (/ int 16))))
     (cond
-     ((= 0 (remainder (string-length hex) 2))
-      hex)
+     ((= div 0)
+      (list-ref digits rem))
      (else
-      (string-append "0" hex)))))
+      (string-append (_integer->hex div) (list-ref digits rem))))))
