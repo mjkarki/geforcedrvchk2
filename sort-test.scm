@@ -1,5 +1,5 @@
 (include "misctools.scm")
-(include "unittest2.scm")
+(include "unittest.scm")
 
 (test "Sort (asc) integer list"
       (sort <

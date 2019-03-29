@@ -1,5 +1,5 @@
 (include "match.scm")
-(include "unittest2.scm")
+(include "unittest.scm")
 
 (test "Simple strings, identical query"
       (match "123456"
