@@ -68,8 +68,29 @@
    (else
     (cons (car b) (_merge fn a (cdr b))))))
 
-;; integer->hex
-;;   converts integer value to hexadecimal string
+;; search lst item
+;;   find item from the list and return the index
+;;
+;;   lst  - a list
+;;   item - item to be found, same format as the items in the list
+;;
+;;   return value:
+;;     #f      - if the item was not found from the list
+;;     integer - index of the first occurrence found from the list
+
+(define (search lst item)
+  (letrec ((s (lambda (l i n)
+                (cond
+                 ((null? l)
+                  #f)
+                 ((equal? i (car l))
+                  n)
+                 (else
+                  (s (cdr l) i (+ n 1)))))))
+    (s lst item 0)))
+
+;; integer->hex int
+;;   converts integer value to a hexadecimal string
 ;;
 ;;   int - positive integer number
 
@@ -78,20 +99,65 @@
    ((integer? int)
     (let ((hex (_integer->hex (abs int))))
       (cond
-       ((= 0 (remainder (string-length hex) 2))
-        hex)
+       ((= 0 (remainder (length hex) 2))
+        (list->string (reverse hex)))
        (else
-        (string-append "0" hex)))))
+        (list->string (cons #\0 (reverse hex)))))))
    (else
     "")))
 
 (define (_integer->hex int)
-  (let ((digits '("0" "1" "2" "3" "4" "5" "6" "7"
-                  "8" "9" "A" "B" "C" "D" "E" "F"))
+  (let ((digits '(#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7
+                      #\8 #\9 #\A #\B #\C #\D #\E #\F))
         (rem (remainder int 16))
         (div (truncate (/ int 16))))
     (cond
      ((= div 0)
-      (list-ref digits rem))
+      (list (list-ref digits (inexact->exact rem))))
      (else
-      (string-append (_integer->hex div) (list-ref digits rem))))))
+      (cons (list-ref digits (inexact->exact rem))
+            (_integer->hex div))))))
+
+;; hex->int8-list hex
+;;   converts hexadecimal string to a list of 8-bit integers
+;;
+;;   hex - arbitrary length hexadecimal string
+;;
+;;   return value:
+;;     list - list of integers
+
+(define (hex->int8-list hex)
+  (cond
+   ((= 0 (remainder (string-length hex) 2))
+    (_hex->int8-list hex))
+   (else
+    (_hex->int8-list (string-append "0" hex)))))
+
+(define (_hex->int8-list hex)
+  (cond
+   ((<= (string-length hex) 2)
+    (list (hex->int8 hex)))
+   (else
+    (cons (hex->int8 (substring hex 0 2))
+          (_hex->integer-list (substring hex 2
+                                         (string-length hex)))))))
+
+;; hex->int8 hex
+;;   convert 8-bit hexadecimal string to an integer
+;;
+;;   hex - two character string representing a hexadecimal value
+
+(define (hex->int8 hex)
+  (cond
+   ((< (string-length hex) 1)
+    0)
+   ((< (string-length hex) 2)
+    (_h->i (string-ref hex 0)))
+   (else
+    (+ (* (_h->i (string-ref hex 0)) 16)
+       (_h->i (string-ref hex 1))))))
+
+(define (_h->i chr)
+  (let ((digits '(#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7
+                      #\8 #\9 #\A #\B #\C #\D #\E #\F)))
+    (search digits (char-upcase chr))))
