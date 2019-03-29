@@ -139,8 +139,8 @@
     (list (hex->int8 hex)))
    (else
     (cons (hex->int8 (substring hex 0 2))
-          (_hex->integer-list (substring hex 2
-                                         (string-length hex)))))))
+          (_hex->int8-list (substring hex 2
+                                      (string-length hex)))))))
 
 ;; hex->int8 hex
 ;;   convert 8-bit hexadecimal string to an integer
