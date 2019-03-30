@@ -109,14 +109,13 @@
 (define (_integer->hex int)
   (let ((digits '(#\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7
                       #\8 #\9 #\A #\B #\C #\D #\E #\F))
-        (rem (remainder int 16))
-        (div (truncate (/ int 16))))
+        (rem (inexact->exact (remainder int 16)))
+        (div (inexact->exact (truncate (/ int 16)))))
     (cond
      ((= div 0)
-      (list (list-ref digits (inexact->exact rem))))
+      (list (list-ref digits rem)))
      (else
-      (cons (list-ref digits (inexact->exact rem))
-            (_integer->hex div))))))
+      (cons (list-ref digits rem) (_integer->hex div))))))
 
 ;; hex->int8-list hex
 ;;   converts hexadecimal string to a list of 8-bit integers
