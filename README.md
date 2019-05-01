@@ -31,6 +31,5 @@ Libraries:
 
 - *misctools.scm* small helper function, which I need time to time. log10, list sorting...
 - *match.scm* simple regular expression inspired library for text matching
-- *unittest.scm* small unit test library written with define-syntax, requires the syntax-case library (command line option -:s)
-- *unittest2.scm* small unit test library written with define-macro, which works without including the syntax-case library
+- *unittest.scm* small unit test library written with define-macro, which works without including the syntax-case library
 - *nativewin.scm* native Win32 functions (MessageBoxA and simple SSL client support)
