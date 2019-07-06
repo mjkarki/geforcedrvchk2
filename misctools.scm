@@ -68,6 +68,26 @@
    (else
     (cons (car b) (_merge fn a (cdr b))))))
 
+(define (take lst n)
+  (let take_ ((lst lst) (n n) (result '()))
+    (cond
+     ((= n 0)
+      (reverse result))
+     ((null? lst)
+      (reverse result))
+     (else
+      (take_ (cdr lst) (- n 1) (cons (car lst) result))))))
+
+(define (drop lst n)
+  (let drop_ ((lst lst) (n n))
+    (cond
+     ((= n 0)
+      lst)
+     ((null? lst)
+      lst)
+     (else
+      (drop_ (cdr lst) (- n 1))))))
+
 ;; search lst item
 ;;   find item from the list and return the index
 ;;
@@ -79,14 +99,14 @@
 ;;     integer - index of the first occurrence found from the list
 
 (define (search lst item)
-  (let _search ((l lst) (i item) (n 0))
+  (let search_ ((l lst) (i item) (n 0))
     (cond
      ((null? l)
       #f)
      ((equal? i (car l))
       n)
      (else
-      (_search (cdr l) i (+ n 1))))))
+      (search_ (cdr l) i (+ n 1))))))
 
 ;; integer->hex int
 ;;   converts integer value to a hexadecimal string
