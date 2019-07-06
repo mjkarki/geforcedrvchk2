@@ -1,6 +1,22 @@
 (include "misctools.scm")
 (include "unittest.scm")
 
+(test "Take"
+      (take '(1 2 3 4 5) 3)
+      '(1 2 3))
+
+(test "Take - out of bounds"
+      (take '(1 2) 3)
+      '(1 2))
+
+(test "Drop"
+      (drop '(1 2 3 4 5) 3)
+      '(4 5))
+
+(test "Drop - out of bounds"
+      (drop '(1 2) 3)
+      '())
+
 (test "Sort (asc) integer list"
       (sort <
             '(7 453 4 5 2 3 90 1 23 15 8 6 0))
