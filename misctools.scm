@@ -79,15 +79,14 @@
 ;;     integer - index of the first occurrence found from the list
 
 (define (search lst item)
-  (letrec ((s (lambda (l i n)
-                (cond
-                 ((null? l)
-                  #f)
-                 ((equal? i (car l))
-                  n)
-                 (else
-                  (s (cdr l) i (+ n 1)))))))
-    (s lst item 0)))
+  (let _search ((l lst) (i item) (n 0))
+    (cond
+     ((null? l)
+      #f)
+     ((equal? i (car l))
+      n)
+     (else
+      (_search (cdr l) i (+ n 1))))))
 
 ;; integer->hex int
 ;;   converts integer value to a hexadecimal string
