@@ -1,6 +1,6 @@
 ;; BSD 3-Clause License
 ;;
-;; Copyright (c) 2018, Matti J. Kärki
+;; Copyright (c) 2018-2019, Matti J. Kärki
 ;; All rights reserved.
 ;;
 ;; Redistribution and use in source and binary forms, with or without
@@ -52,29 +52,27 @@
                (bitwise-ior MB_OK MB_ICONSTOP))
   #f)
 
+(define (get-program-output path)
+  (with-exception-handler (lambda (e) "")
+    (lambda () (call-with-input-process (list path: path show-console: #f) port->string))))
+
 (define (get-installed-version)
   (let ((matchresult (match "Driver Version: (N.N)"
-                            (with-exception-handler
-                             (lambda (e)
-                               "")
-                             (lambda ()
-                               (call-with-input-process (list path: NVIDIASMI
-                                                              show-console: #f)
-                                                        port->string))))))
+                       (get-program-output NVIDIASMI))))
     (cond
-     ((> (string-length matchresult) 0)
-      (string->number matchresult))
-     (else
-      (show-error-message NVIDIASMI)))))
+      ((> (string-length matchresult) 0)
+       (string->number matchresult))
+      (else
+       (show-error-message NVIDIASMI)))))
 
 (define (get-driver-info)
   (let ((page (winhttp-get HOST PATH #t)))
     (cond
-     ((string? page)
-      (list (string->number (match "\"Version\" : \"(N.N)\"" page))
-            (match "\"DownloadURL\" : \"(*)\"" page)))
-     (else
-      (list #f #f)))))
+      ((string? page)
+       (list (string->number (match "\"Version\" : \"(N.N)\"" page))
+             (match "\"DownloadURL\" : \"(*)\"" page)))
+      (else
+       (list #f #f)))))
 
 (define (ask-for-update installed-version version)
   (message-box (string-append "Current version: "
@@ -85,19 +83,23 @@
                "There is a new GeForce driver available"
                (bitwise-ior MB_YESNO MB_ICONEXCLAMATION)))
 
+(define (open-browser url)
+  (open-process (list path: CMD
+                      arguments: (list "/c" "start" url)
+                      show-console: #f)))
+
 (define (main)
   (let* ((info (get-driver-info))
          (version (car info))
          (dlurl (cadr info))
          (installed-version (get-installed-version)))
     (cond
-     ((and version
-           installed-version
-           (> version installed-version)
-           (= IDYES (ask-for-update (number->string installed-version)
-                                    (number->string version))))
-      (open-process (list path: CMD
-                          arguments: (list "/c" "start" dlurl)
-                          show-console: #f))))))
+      ((and version
+            installed-version
+            (> version installed-version)
+            (= IDYES (ask-for-update (number->string installed-version)
+                                     (number->string version))))
+       (open-browser dlurl)))))
 
 (main)
+
