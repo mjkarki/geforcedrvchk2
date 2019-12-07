@@ -28,6 +28,7 @@
 ;; OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 ;; OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
 (include "nativewin.scm")
 (include "misctools.scm")
 (include "match.scm")
@@ -40,6 +41,10 @@
 (define WINDIR (getenv "windir"))
 (define CMD (string-append WINDIR "\\System32\\" "cmd.exe"))
 
+
+;; Name:       show-error-message
+;; Parameters: nvidiasmi - full path to nvidia-smi.exe
+;; Returns:    #f
 (define (show-error-message nvidiasmi)
   (message-box (string-append "Unable to get the driver version!"
                               "\n\n"
@@ -52,10 +57,18 @@
                (bitwise-ior MB_OK MB_ICONSTOP))
   #f)
 
+
+;; Name:       get-program-output 
+;; Parameters: path - full path to an executable
+;; Returns:    executable stdout output
 (define (get-program-output path)
   (with-exception-handler (lambda (e) "")
     (lambda () (call-with-input-process (list path: path show-console: #f) port->string))))
 
+
+;; Name:       get-installed-version
+;; Parameters: -
+;; Returns:    version number as a number or #f
 (define (get-installed-version)
   (let ((matchresult (match "Driver Version: (N.N)"
                        (get-program-output NVIDIASMI))))
@@ -65,6 +78,12 @@
       (else
        (show-error-message NVIDIASMI)))))
 
+
+;; Name:       get-driver-info
+;; Parameters: -
+;; Returns:    '(version url) or '(#f #f)
+;;             where version is available driver version as a number
+;;             and url is a download URL of the driver
 (define (get-driver-info)
   (let ((page (winhttp-get HOST PATH #t)))
     (cond
@@ -74,6 +93,11 @@
       (else
        (list #f #f)))))
 
+
+;; Name:       ask-for-update 
+;; Parameters: installed-version - version number from (get-installed-version)
+;;             version           - version number from (get-driver-info)
+;; Returns:    IDYES or IDNO
 (define (ask-for-update installed-version version)
   (message-box (string-append "Current version: "
                               installed-version
@@ -83,11 +107,19 @@
                "There is a new GeForce driver available"
                (bitwise-ior MB_YESNO MB_ICONEXCLAMATION)))
 
+
+;; Name:       open-browser
+;; Parameters: url - opens external browser with URL
+;; Returns:    -
 (define (open-browser url)
   (open-process (list path: CMD
                       arguments: (list "/c" "start" url)
                       show-console: #f)))
 
+
+;; Name:       main
+;; Parameters: -
+;; Returns:    -
 (define (main)
   (let* ((info (get-driver-info))
          (version (car info))
