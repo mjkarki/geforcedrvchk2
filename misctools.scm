@@ -68,6 +68,15 @@
    (else
     (cons (car b) (_merge fn a (cdr b))))))
 
+;; take lst n
+;;   takes first n elements from the list and returns them
+;;
+;;   lst - list of elements
+;;   n   - number of elements to pick
+;;
+;;   return value:
+;;     list - the first n elements of the list
+
 (define (take lst n)
   (let take_ ((lst lst) (n n) (result '()))
     (cond
@@ -77,6 +86,15 @@
       (reverse result))
      (else
       (take_ (cdr lst) (- n 1) (cons (car lst) result))))))
+
+;; drop lst n
+;;   drops the first n elements from the list and return the rest of the list
+;;
+;;   lst - list of elements
+;;   n   - number of elements to drop
+;;
+;;   return value:
+;;     list - elements of the list minus the first n elements
 
 (define (drop lst n)
   (let drop_ ((lst lst) (n n))
@@ -89,7 +107,7 @@
       (drop_ (cdr lst) (- n 1))))))
 
 ;; search lst item
-;;   find item from the list and return the index
+;;   finds item from the list and returns the index
 ;;
 ;;   lst  - a list
 ;;   item - item to be found, same format as the items in the list
@@ -161,7 +179,7 @@
                                       (string-length hex)))))))
 
 ;; hex->int8 hex
-;;   convert 8-bit hexadecimal string to an integer
+;;   converts 8-bit hexadecimal string to an integer
 ;;
 ;;   hex - two character string representing a hexadecimal value
 
